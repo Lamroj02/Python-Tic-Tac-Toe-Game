@@ -3,8 +3,35 @@
 """ A tic-tac-toe game designed in Python using Tkinter for visuals. """
 
 import tkinter as tk
+from itertools import cycle
 from tkinter import font #to be used for modifying display text
+from typing import NamedTuple
 
+class Player(NamedTuple):
+    label: str
+    color: str
+
+class Move(NamedTuple):
+    row: int
+    col: int
+    label: str = ""
+
+BOARD_SIZE = 3
+DEFAULT_PLAYERS = (
+    Player(label="X", color="red"),
+    Player(label="O", color="blue"),
+)
+
+class TicTacToeGame:
+    def __init__(self, players=DEFAULT_PLAYERS, board_size=BOARD_SIZE):
+        self._players = cycle(players)
+        self.board_size = board_size
+        self.current_player = next(self._players)
+        self.winner_combo = []
+        self._current_moves = []
+        self._has_winner = False
+        self._winning_combos = []
+        self._setup_board()
 
 class TicTacToeBoard(tk.Tk):
     def __init__(self):

@@ -156,10 +156,23 @@ class TicTacToeBoard(tk.Tk):
                 msg = f"{self._game.current_player.label}'s turn"
                 self._update_display(msg)
 
+    def _update_button(self, clicked_btn):
+        clicked_btn.config(text=self._game.current_player.label)
+        clicked_btn.config(fg=self._game.current_player.color)
+
+    def _update_display(self, msg, color="black"):
+        self.display["text"] = msg
+        self.display["fg"] = color
+
+    def _highlight_cells(self):
+        for button, coordinates in self._cells.items():
+            if coordinates in self._game.winner_combo:
+                button.config(highlightbackground="red")
 
 def main():
     """ Create the game board and run the main loop. """
-    board = TicTacToeBoard()
+    game = TicTacToeGame()
+    board = TicTacToeBoard(game)
     board.mainloop()
 
 #Only calls main() when .py file is run as an executable.
